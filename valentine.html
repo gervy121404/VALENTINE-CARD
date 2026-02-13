@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'Georgia', serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at top, #ffd6e0, #a8c0ff);
+    overflow: hidden;
+}
+
+/* Floating hearts background */
+.hearts span {
+    position: absolute;
+    font-size: 20px;
+    animation: float 8s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) scale(0.8); }
+    100% { transform: translateY(-10vh) scale(1.4); }
+}
+
+/* Card */
+.card {
+    background: rgba(255,255,255,0.95);
+    width: 90%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 5;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+.name {
+    color: #ff2e63;
+}
+
+p {
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    min-height: 60px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+.yes {
+    background: #ff2e63;
+    color: white;
+}
+
+.yes:hover {
+    transform: scale(1.1);
+}
+
+.no {
+    background: #ddd;
+    color: #333;
+}
+
+/* Persuasion shrinking effect */
+#no1:target ~ .card .no { transform: scale(0.7); }
+#no2:target ~ .card .no { transform: scale(0.4); }
+#no3:target ~ .card .no { display: none; }
+
+/* Hide main on yes */
+#yes:target ~ .card .main {
+    display: none;
+}
+
+/* Confetti */
+.confetti span {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background: red;
+    top: -10px;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Love letter */
+.letter {
+    display: none;
+    text-align: left;
+    animation: fadeIn 2s ease forwards;
+}
+
+#yes:target ~ .card .letter {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hearts fill screen after final */
+#forever:target ~ .hearts span {
+    font-size: 35px;
+}
+
+/* Responsive */
+@media(max-width:480px){
+    h1 { font-size: 20px; }
+}
+
+/* Hide staged NO buttons */
+.no-small,
+.no-tiny {
+    display: none;
+}
+
+/* Stage 1 shrink */
+#no1:target ~ .card .no-default {
+    display: none;
+}
+#no1:target ~ .card .no-small {
+    display: inline-block;
+    transform: scale(0.6);
+}
+
+/* Stage 2 shrink */
+#no2:target ~ .card .no-small {
+    display: none;
+}
+#no2:target ~ .card .no-tiny {
+    display: inline-block;
+    transform: scale(0.35);
+}
+
+/* Stage 3 - NO disappears */
+#no3:target ~ .card .no-tiny {
+    display: none;
+}
+
+/* AFTER NO DISAPPEARS */
+
+/* YES grows huge */
+#no3:target ~ .card .yes {
+    transform: scale(1.8);
+    animation: glow 1s infinite alternate;
+}
+
+/* Text changes */
+#no3:target ~ .card .title {
+    content: "You tried. Now choose correctly.";
+}
+
+#no3:target ~ .card .subtitle {
+    display: none;
+}
+
+/* Replace title text visually */
+#no3:target ~ .card .title::after {
+    content: "You tried. Now choose correctly.";
+    display: block;
+    font-size: 20px;
+    color: #ff2e63;
+}
+
+/* Screen shake */
+#no3:target ~ .card {
+    animation: shake 0.3s linear 3;
+}
+
+/* Glow animation */
+@keyframes glow {
+    from { box-shadow: 0 0 10px #ff2e63; }
+    to { box-shadow: 0 0 30px #ff2e63; }
+}
+
+/* Shake animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- Anchors -->
+<div id="no1"></div>
+<div id="no2"></div>
+<div id="no3"></div>
+<div id="yes"></div>
+
+<!-- Background hearts -->
+<div class="hearts">
+    <span style="left:10%;">💗</span>
+    <span style="left:30%;">💖</span>
+    <span style="left:50%;">💕</span>
+    <span style="left:70%;">💘</span>
+    <span style="left:85%;">💓</span>
+</div>
+
+<div class="card">
+
+   <div class="main">
+    <h1 class="title">
+        <span class="name">Name</span>, will you be my Valentine? 💌
+    </h1>
+
+    <p class="subtitle">
+        I promise unlimited hugs and random “I miss you” texts 🥰
+    </p>
+
+    <div class="buttons">
+        <a href="#yes" class="btn yes">Yes 💖</a>
+
+        <!-- NO stages -->
+        <a href="#no1" class="btn no no-default">No 🙈</a>
+        <a href="#no2" class="btn no no-small">No 🙈</a>
+        <a href="#no3" class="btn no no-tiny">No 🙈</a>
+    </div>
+</div>
+
+    <!-- Persuasion stages -->
+    <div id="no1"></div>
+    <div id="no2"></div>
+    <div id="no3"></div>
+
+    <!-- Cinematic Love Letter -->
+    <div class="letter">
+        <h2>My Love,</h2>
+        <p>
+            From the moment you walked into my life,
+            something felt different.
+            You didn’t just make me smile —
+            you made me softer, braver, and happier.
+        </p>
+        <p>
+            If you’ll let me,
+            I’d love to spend more days
+            choosing you again and again.
+        </p>
+        <p style="text-align:center;">
+            <a href="#forever" class="btn yes">Forever 💍</a>
+        </p>
+    </div>
+
+</div>
+
+<!-- Confetti on YES -->
+<div class="confetti">
+    <span style="left:10%; background:#ff2e63;"></span>
+    <span style="left:25%; background:#ffd166;"></span>
+    <span style="left:40%; background:#06d6a0;"></span>
+    <span style="left:60%; background:#118ab2;"></span>
+    <span style="left:75%; background:#ef476f;"></span>
+    <span style="left:90%; background:#ff2e63;"></span>
+</div>
+
+<!-- Background music -->
+<audio id="bgMusic" loop>
+    <source src="statue.mp3.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener("click", function () {
+    const music = document.getElementById("bgMusic");
+    music.play();
+}, { once: true });
+</script>
+
+</body>
+</html>
